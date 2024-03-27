@@ -21,7 +21,7 @@ Make sure that you have [Protocol Buffers][protocol-buffers] (version 21.12) com
 
 A copy of [Go][go-install] (version 1.19.4) and docker template (version 3.7) will also need to be installed on your system.
 
-If any of these versions seem outdated, the latest can always be found in our [CI script][mf-ci-scripts].
+If any of these versions seem outdated, the latest can always be found in our [CI script][mg-ci-scripts].
 
 ### Build All Services
 
@@ -175,7 +175,7 @@ magistrala-mqtt   | FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScr
 magistrala-mqtt exited with code 137
 ```
 
-This problem is caused the default allowed memory in node (V8). [V8 gives the user 1.7GB per default][increase-nodes-memory]. To fix the problem you should add the following environment variable `NODE_OPTIONS:--max-old-space-size=SPACE_IN_MB` in the [environment section][mf-aedes] of the aedes.yml configuration. To find the right value for the `--max-old-space-size` parameter you'll have to experiment a bit depending on your needs.
+This problem is caused the default allowed memory in node (V8). [V8 gives the user 1.7GB per default][increase-nodes-memory]. To fix the problem you should add the following environment variable `NODE_OPTIONS:--max-old-space-size=SPACE_IN_MB` in the [environment section][mg-aedes] of the aedes.yml configuration. To find the right value for the `--max-old-space-size` parameter you'll have to experiment a bit depending on your needs.
 
 The Magistrala MQTT service uses the [Aedes MQTT Broker][aedes-mqtt-broker] for implementation of the MQTT related things. Therefore, for some questions or problems you can also check out the Aedes's documentation or reach out its contributors.
 
@@ -304,13 +304,13 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 [protobuf]: https://github.com/google/protobuf
 [google-protobuf]: https://google.golang.org/protobuf/proto
 [go-install]: https://golang.org/doc/install
-[mf-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
+[mg-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
 [scratch-docker]: https://hub.docker.com/_/scratch/
 [cleanup-docker]: #cleaning-up-your-dockerized-magistrala-setup
 [docker-compose-ref]: https://docs.docker.com/compose/reference/overview/
 [docker-compose-extend]: https://docs.docker.com/compose/extends/
 [increase-nodes-memory]: https://medium.com/tomincode/increasing-nodes-memory-337dfb1a60dd
-[mf-aedes]: https://github.com/absmach/magistrala/blob/master/docker/aedes.yml#L31
+[mg-aedes]: https://github.com/absmach/magistrala/blob/master/docker/aedes.yml#L31
 [aedes-mqtt-broker]: https://github.com/mcollina/aedes
 [go-cross-compile]: https://dave.cheney.net/2015/08/22/cross-compilation-with-go-1-5
 [go-arm]: https://www.alexruf.net/golang/arm/raspberrypi/2016/01/16/cross-compile-with-go-1-5-for-raspberry-pi.html
