@@ -2,11 +2,11 @@
 
 ## Getting Magistrala
 
-Magistrala source can be found in the official [Magistrala GitHub repository][mainflux-repo]. You should fork this repository in order to make changes to the project. The forked version of the repository should be cloned using the following:
+Magistrala source can be found in the official [Magistrala GitHub repository][magistrala-repo]. You should fork this repository in order to make changes to the project. The forked version of the repository should be cloned using the following:
 
 ```bash
-git clone <forked repository> $SOMEPATH/mainflux
-cd $SOMEPATH/mainflux
+git clone <forked repository> $SOMEPATH/magistrala
+cd $SOMEPATH/magistrala
 ```
 
 **Note:** If your `$SOMEPATH` is equal to `$GOPATH/src/github.com/absmach/magistrala`, make sure that your `$GOROOT` and `$GOPATH` do not overlap (otherwise, go modules won't work).
@@ -21,7 +21,7 @@ Make sure that you have [Protocol Buffers][protocol-buffers] (version 21.12) com
 
 A copy of [Go][go-install] (version 1.19.4) and docker template (version 3.7) will also need to be installed on your system.
 
-If any of these versions seem outdated, the latest can always be found in our [CI script][mf-ci-scripts].
+If any of these versions seem outdated, the latest can always be found in our [CI script][mg-ci-scripts].
 
 ### Build All Services
 
@@ -171,11 +171,11 @@ Depending on your use case, MQTT topics, message size, the number of clients and
 Up until now it has been noticed that in case of high load, big messages and many clients it can happen that the MQTT microservice crashes with the following error:
 
 ```bash
-mainflux-mqtt   | FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
-mainflux-mqtt exited with code 137
+magistrala-mqtt   | FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
+magistrala-mqtt exited with code 137
 ```
 
-This problem is caused the default allowed memory in node (V8). [V8 gives the user 1.7GB per default][increase-nodes-memory]. To fix the problem you should add the following environment variable `NODE_OPTIONS:--max-old-space-size=SPACE_IN_MB` in the [environment section][mf-aedes] of the aedes.yml configuration. To find the right value for the `--max-old-space-size` parameter you'll have to experiment a bit depending on your needs.
+This problem is caused the default allowed memory in node (V8). [V8 gives the user 1.7GB per default][increase-nodes-memory]. To fix the problem you should add the following environment variable `NODE_OPTIONS:--max-old-space-size=SPACE_IN_MB` in the [environment section][mg-aedes] of the aedes.yml configuration. To find the right value for the `--max-old-space-size` parameter you'll have to experiment a bit depending on your needs.
 
 The Magistrala MQTT service uses the [Aedes MQTT Broker][aedes-mqtt-broker] for implementation of the MQTT related things. Therefore, for some questions or problems you can also check out the Aedes's documentation or reach out its contributors.
 
@@ -256,11 +256,11 @@ nats-server
 ```
 
 If you want to change the default message broker to [RabbitMQ][rabbitmq], [VerneMQ][vernemq] or [Kafka][kafka] you need to install it on the local system.
-To run using a different broker you need to set the `MF_BROKER_TYPE` env variable to `nats`, `rabbitmq` or `vernemq` during make and run process.
+To run using a different broker you need to set the `MG_BROKER_TYPE` env variable to `nats`, `rabbitmq` or `vernemq` during make and run process.
 
 ```bash
-MF_BROKER_TYPE=<broker-type> make
-MF_BROKER_TYPE=<broker-type> make run
+MG_BROKER_TYPE=<broker-type> make
+MG_BROKER_TYPE=<broker-type> make run
 ```
 
 #### PostgreSQL
@@ -277,8 +277,8 @@ sudo -u postgres createdb things
 # Set-up Postgres roles
 sudo su - postgres
 psql -U postgres
-postgres=# CREATE ROLE mainflux WITH LOGIN ENCRYPTED PASSWORD 'mainflux';
-postgres=# ALTER USER mainflux WITH LOGIN ENCRYPTED PASSWORD 'mainflux';
+postgres=# CREATE ROLE magistrala WITH LOGIN ENCRYPTED PASSWORD 'magistrala';
+postgres=# ALTER USER magistrala WITH LOGIN ENCRYPTED PASSWORD 'magistrala';
 ```
 
 ### Magistrala Services
@@ -297,24 +297,24 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 
 > N.B. `make rundev` actually calls helper script `scripts/run.sh`, so you can inspect this script for the details.
 
-[mainflux-repo]: https://github.com/Magistrala/mainflux
+[magistrala-repo]: https://github.com/absmach/magistrala
 [protocol-buffers]: https://developers.google.com/protocol-buffers/
 [golang-protobuf]: https://github.com/golang/protobuf
 [protobuf-install]: https://github.com/golang/protobuf#installation
 [protobuf]: https://github.com/google/protobuf
-[google-protobuf]: "google.golang.org/protobuf/proto"
+[google-protobuf]: https://google.golang.org/protobuf/proto
 [go-install]: https://golang.org/doc/install
-[mf-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
+[mg-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
 [scratch-docker]: https://hub.docker.com/_/scratch/
-[cleanup-docker]: #cleaning-up-your-dockerized-mainflux-setup
+[cleanup-docker]: #cleaning-up-your-dockerized-magistrala-setup
 [docker-compose-ref]: https://docs.docker.com/compose/reference/overview/
 [docker-compose-extend]: https://docs.docker.com/compose/extends/
 [increase-nodes-memory]: https://medium.com/tomincode/increasing-nodes-memory-337dfb1a60dd
-[mf-aedes]: https://github.com/absmach/magistrala/blob/master/docker/aedes.yml#L31
+[mg-aedes]: https://github.com/absmach/magistrala/blob/master/docker/aedes.yml#L31
 [aedes-mqtt-broker]: https://github.com/mcollina/aedes
 [go-cross-compile]: https://dave.cheney.net/2015/08/22/cross-compilation-with-go-1-5
 [go-arm]: https://www.alexruf.net/golang/arm/raspberrypi/2016/01/16/cross-compile-with-go-1-5-for-raspberry-pi.html
-[wiki-go-arm]: https://github.com/golang/go/wiki/GoArm
+[wiki-go-arm]: https://go.dev/wiki/GoArm
 [nats]: https://www.nats.io/
 [postgresql]: https://www.postgresql.org/
 [rabbitmq]: https://www.rabbitmq.com/download.html

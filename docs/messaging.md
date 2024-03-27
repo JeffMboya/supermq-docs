@@ -296,13 +296,13 @@ Each broker has a unique profile for configuration. The available profiles are:
 The following command will run VerneMQ as an MQTT broker and Nats as a message broker:
 
 ```bash
-MF_MQTT_BROKER_TYPE=vernemq MF_BROKER_TYPE=nats make run
+MG_MQTT_BROKER_TYPE=vernemq MG_BROKER_TYPE=nats make run
 ```
 
 The following command will run NATS as an MQTT broker and RabbitMQ as a message broker:
 
 ```bash
-MF_MQTT_BROKER_TYPE=nats MF_BROKER_TYPE=rabbitmq make run
+MG_MQTT_BROKER_TYPE=nats MG_BROKER_TYPE=rabbitmq make run
 ```
 
 By default, NATS is used as an MQTT broker and RabbitMQ as a message broker.
@@ -354,26 +354,26 @@ Magistrala supports [NATS][nats], [RabbitMQ][rabbitmq] and [Kafka][kafka] as mes
 
 ### NATS JetStream
 
-Since Magistrala supports configurable message brokers, you can use Nats with JetStream enabled as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `nats` and set `MF_NATS_URL` to the url of your nats instance. When using `make` command to start Magistrala `MF_BROKER_URL` is automatically set to `MF_NATS_URL`.
+Since Magistrala supports configurable message brokers, you can use Nats with JetStream enabled as a message broker. To do so, you need to set `MG_BROKER_TYPE` to `nats` and set `MG_NATS_URL` to the url of your nats instance. When using `make` command to start Magistrala `MG_BROKER_URL` is automatically set to `MG_NATS_URL`.
 
 Since Magistrala is using `nats:2.9.21-alpine` docker image with the following configuration:
 
 ```conf
 max_payload: 1MB
 max_connections: 1M
-port: $MF_NATS_PORT
-http_port: $MF_NATS_HTTP_PORT
+port: $MG_NATS_PORT
+http_port: $MG_NATS_HTTP_PORT
 trace: true
 
 jetstream {
     store_dir: "/data"
     cipher: "aes"
-    key: $MF_NATS_JETSTREAM_KEY
+    key: $MG_NATS_JETSTREAM_KEY
     max_mem: 1G
 }
 ```
 
-These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The health check endpoint is exposed on `MF_NATS_HTTP_PORT` and its `/healthz` path.
+These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The health check endpoint is exposed on `MG_NATS_HTTP_PORT` and its `/healthz` path.
 
 #### Architecture
 
@@ -383,9 +383,9 @@ This versatile architecture allows you to use nats alone for the MQTT broker, me
 
 ### RabbitMQ
 
-Since Magistrala uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start Magistrala `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
+Since Magistrala uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MG_BROKER_TYPE` to `rabbitmq` and set `MG_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start Magistrala `MG_BROKER_URL` is automatically set to `MG_RABBITMQ_URL`.
 
-Since Magistrala is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
+Since Magistrala is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MG_RABBITMQ_HTTP_PORT`
 
 #### Architecture
 
@@ -408,7 +408,7 @@ For more information and examples checkout [official nats.io documentation][nats
 
 ### Kafka
 
-Since Magistrala uses a configurable message broker, you can use Kafka as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `kafka` and set `MF_KAFKA_URL` to the url of your Kafka instance. When using `make` command to start Magistrala `MF_BROKER_URL` is automatically set to `MF_KAFKA_URL`.
+Since Magistrala uses a configurable message broker, you can use Kafka as a message broker. To do so, you need to set `MG_BROKER_TYPE` to `kafka` and set `MG_KAFKA_URL` to the url of your Kafka instance. When using `make` command to start Magistrala `MG_BROKER_URL` is automatically set to `MG_KAFKA_URL`.
 
 Magistrala utilizes `spotify/kafka:latest` docker image. The image also exposes `kafka:9092` and `zookeeper:2181` ports. This is used for development purposes only. For production, it is assumed that you have your own Kafka cluster.
 
@@ -429,9 +429,9 @@ For more information and examples checkout [official nats.io documentation][nats
 [mosquitto]: https://mosquitto.org
 [paho]: https://www.eclipse.org/paho/
 [rfc7252]: https://tools.ietf.org/html/rfc7252
-[coap-cli]: https://github.com/mainflux/coap-cli
+[coap-cli]: https://github.com/absmach/coap-cli
 [rfc7641]: https://tools.ietf.org/html/rfc7641#page-18
-[coap]: https://www.github.com/absmach/magistrala/terr/main/coap/README.md
+[coap]: https://www.github.com/absmach/magistrala/tree/main/coap/README.md
 [mqtt-over-websockets]: https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).
 [paho-js]: https://www.eclipse.org/paho/index.php?page=clients/js/index.php
 [mqttjs]: https://github.com/mqttjs/MQTT.js
