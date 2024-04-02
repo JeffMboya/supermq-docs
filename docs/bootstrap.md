@@ -73,6 +73,23 @@ There are two more fields: `external_id` and `external_key`. External ID represe
 
 For more details on which encryption mechanisms are used, please take a look at the implementation.
 
+### Enabling and disabling things
+
+Uploading configuration does not automatically connect thing to the given list of channels. In order to connect the thing to the channels, user needs to send the following HTTP request:
+
+```bash
+curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/things/state/<thing_id> -d '{"state": 1}'
+```
+
+In order to disconnect, the same request should be sent with the value of `state` set to 0 as shown below.
+
+```bash
+curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/things/state/<thing_id> -d '{"state": 0}'
+```
+
+Note that if the connection between the 'thing_id' and 'channel_id' was established through the User Interface (UI), then the disconnection should also be performed through the UI. Similarly, if the connection was established using the above `curl` command in the terminal, the disconnection should also be executed using a `curl` command in the terminal. A connection made through the UI cannot be disconnected using a `curl` command in the terminal, and vice versa. Each method of connection requires its corresponding method of disconnection.
+
+
 ### Bootstrapping
 
 Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given Magistrala thing. In order to fetch the configuration, _the thing_ needs to send a bootstrapping request:
@@ -85,38 +102,29 @@ The response body should look something like:
 
 ```json
 {
-   "thing_id":"7d63b564-3092-4cda-b441-e65fc1f285f0",
-   "thing_key":"d0f6ff22-f521-4674-9065-e265a9376a78",
-   "channels":[
-      {
-         "id":"c4d6edb2-4e23-49f2-b6ea-df8bc6769591",
-         "name":"c1",
-         "metadata":null
-      },
-      {
-         "id":"78c9b88c-b2c4-4d58-a973-725c32194fb3",
-         "name":"c0",
-         "metadata":null
-      }
-   ],
-   "content":"cofig...",
-   "client_cert":"PEM cert",
-   "client_key":"PEM client cert key",
-   "ca_cert":"PEM CA cert"
+  "thing_id": "7d63b564-3092-4cda-b441-e65fc1f285f0",
+  "thing_key": "d0f6ff22-f521-4674-9065-e265a9376a78",
+  "channels": [
+    {
+      "id": "c4d6edb2-4e23-49f2-b6ea-df8bc6769591",
+      "name": "c1",
+      "metadata": null
+    },
+    {
+      "id": "78c9b88c-b2c4-4d58-a973-725c32194fb3",
+      "name": "c0",
+      "metadata": null
+    }
+  ],
+  "content": "cofig...",
+  "client_cert": "PEM cert",
+  "client_key": "PEM client cert key",
+  "ca_cert": "PEM CA cert"
 }
 ```
 
 The response consists of an ID and key of the Magistrala thing, the list of channels and custom configuration (`content` field). The list of channels contains not just channel IDs, but the additional Magistrala channel data (`name` and `metadata` fields), as well.
 
-### Enabling and disabling things
-
-Uploading configuration does not automatically connect thing to the given list of channels. In order to connect the thing to the channels, user needs to send the following HTTP request:
-
-```bash
-curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/things/state/<thing_id> -d '{"state": 1}'
-```
-
-In order to disconnect, the same request should be sent with the value of `state` set to 0.
 
 For more information about the Bootstrap service API, please check out the [API documentation][api-docs].
 
