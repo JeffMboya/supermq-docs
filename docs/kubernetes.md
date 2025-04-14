@@ -302,7 +302,7 @@ For more examples, refer to this [Postman Collection](https://elements.getpostma
 Here's a **clean, complete, and production-ready update** of your SuperMQ installation documentation that incorporates:
 
 - **How to add the SuperMQ chart as a dependency in a parent chart** using an OCI registry.
-- **Clarifies** the `harbor.example.com` placeholder.
+- **Clarifies** the `supermq.example.com` placeholder.
 - **Follows best practices** from Helm 3.8+ OCI documentation.
 - **Emphasizes clarity** and self-containment.
 
@@ -310,33 +310,31 @@ Here's a **clean, complete, and production-ready update** of your SuperMQ instal
 
 ### Installing SuperMQ from Published Chart
 
-SuperMQ Helm charts are published to a secure, private **OCI registry** hosted on **Harbor**. This installation method is recommended for production and CI/CD pipelines, supporting authentication, RBAC, signed charts, and versioned releases.
+SuperMQ Helm charts are published to a secure, private **OCI registry**. This installation method is recommended for production and CI/CD pipelines, supporting authentication, RBAC, signed charts, and versioned releases.
 
-#### 1. Authenticate with Harbor
+#### 1. Authenticate with Private OCI registry
 
-Use your Harbor username/password or robot account credentials:
+Use your Private OCI registry username/password:
 
 ```bash
-helm registry login harbor.example.com
+helm registry login supermq.example.com
 ```
 
-> **Note:** Replace `harbor.example.com` with your actual Harbor domain (e.g., `harbor.acme.io`, `harbor.internal.company.net`, etc.).
-
-For a full guide on Helm OCI registries, refer to [Working with Helm OCI Charts (Harbor docs)](https://goharbor.io/docs/2.12.0/working-with-projects/working-with-oci/working-with-helm-oci-charts/).
+> **Note:** Replace `supermq.example.com` with your actual Private OCI registry domain.
 
 #### 2. Install the Chart (Choose One Option)
 
 ##### 🔹 Option A — Pull and install locally:
 
 ```bash
-helm pull oci://harbor.example.com/supermq/supermq --version 0.16.7
+helm pull oci://supermq.example.com/supermq/supermq --version 0.16.7
 helm install supermq ./supermq-0.16.7.tgz -n smq
 ```
 
 ##### 🔹 Option B — Install directly from OCI:
 
 ```bash
-helm install supermq oci://harbor.example.com/supermq/supermq \
+helm install supermq oci://supermq.example.com/supermq/supermq \
   --version 0.16.7 \
   -f custom-values.yaml \
   -n smq
@@ -353,7 +351,7 @@ kubectl get pods -n smq
 
 ### Adding SuperMQ as a Dependency in a Parent Chart
 
-If you're building a **parent Helm chart** (e.g. `magistrala`) and want to include SuperMQ as a dependency from your Harbor OCI registry, follow these steps:
+If you're building a **parent Helm chart** (e.g. `magistrala`) and want to include SuperMQ as a dependency from your Private OCI registry, follow these steps:
 
 #### 1. Define the Dependency in `Chart.yaml`
 
@@ -363,15 +361,15 @@ Update your `Chart.yaml` in the parent chart directory:
 dependencies:
   - name: supermq
     version: "0.16.7"
-    repository: "oci://harbor.example.com/supermq"
+    repository: "oci://supermq.example.com/supermq"
 ```
 
-> Be sure to replace `harbor.example.com` with your actual Harbor domain.
+> Be sure to replace `supermq.example.com` with your actual Private OCI registry domain.
 
-#### 2. Authenticate with Harbor (if not already done)
+#### 2. Authenticate with Private OCI registry (if not already done)
 
 ```bash
-helm registry login harbor.example.com
+helm registry login supermq.example.com
 ```
 
 #### 3. Download Dependencies
@@ -426,9 +424,9 @@ kubectl get pods -n <namespace>
 
 ---
 
-## Publishing SuperMQ to Harbor (OCI Registry)
+## Publishing SuperMQ to Private OCI registry (OCI Registry)
 
-To publish the SuperMQ chart to a Harbor-based OCI registry, follow these steps:
+To publish the SuperMQ chart to a Private OCI registry follow these steps:
 
 ### 1. Package the Chart
 
@@ -447,42 +445,42 @@ supermq-0.16.7.tgz
 > **Note:** If you want to override the version defined in `Chart.yaml`, you can use the `--version` flag, for example:  
 > `helm package . --version 0.16.8`
 
-### 2. Authenticate with Harbor (if not already logged in)
+### 2. Authenticate with Private OCI registry (if not already logged in)
 
 ```bash
-helm registry login harbor.example.com
+helm registry login supermq.example.com
 ```
 
-> **Note:** Replace `harbor.example.com` with your actual Harbor domain or IP address.
+> **Note:** Replace `supermq.example.com` with your actual Private OCI registry domain or IP address.
 
 ---
 
-### 3. Push the Chart to Harbor
+### 3. Push the Chart to Private OCI registry
 
 ```bash
-helm push supermq-0.16.7.tgz oci://harbor.example.com/supermq
+helm push supermq-0.16.7.tgz oci://supermq.example.com/supermq
 ```
 
 If successful, you'll see:
 
 ```
-Pushed: harbor.example.com/supermq/supermq:0.16.7
+Pushed: supermq.example.com/supermq/supermq:0.16.7
 Digest: sha256:<hash>
 ```
 
-> **Note:** Make sure the **project (`supermq`) exists** in Harbor before pushing, or the push will fail.
+> **Note:** Make sure the **project (`supermq`) exists** in Private OCI registry before pushing, or the push will fail.
 
 ---
 
 ### 4. (Optional) Verify the Chart Exists
 
-You can browse Harbor's web UI or use the Helm CLI to pull or inspect the chart:
+You can browse Private OCI registry's web UI or use the Helm CLI to pull or inspect the chart:
 
 ```bash
-helm show chart oci://harbor.example.com/supermq/supermq --version 0.16.7
+helm show chart oci://supermq.example.com/supermq/supermq --version 0.16.7
 ```
 
-> **Note:** Replace `harbor.example.com` with your actual Harbor domain or IP address.
+> **Note:** Replace `supermq.example.com` with your actual Private OCI registry domain or IP address.
 
 ---
 
